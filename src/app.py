@@ -18,11 +18,17 @@ with app.app_context():
 # Routes for Area
 @app.route("/areas/", methods=["GET"])
 def get_areas():
+    """
+    Endpoint for getting all the areas
+    """
     areas = Area.query.all()
     return jsonify([area.serialize() for area in areas]), 200
 
 @app.route("/areas/", methods=["POST"])
 def create_area():
+    """
+    Endpoint for creating an area
+    """
     data = request.get_json()
     name = data.get("name")
     if not name:
@@ -35,6 +41,9 @@ def create_area():
 
 @app.route("/areas/<int:area_id>/", methods=["DELETE"])
 def delete_area(area_id):
+    """
+    Endpoint for deleting an area 
+    """
     area = Area.query.get(area_id)
     if not area:
         return jsonify({"error": "Area not found"}), 404
@@ -46,11 +55,17 @@ def delete_area(area_id):
 # Routes for Location
 @app.route("/locations/", methods=["GET"])
 def get_locations():
+    """
+    Endpoint for getting all the locations 
+    """
     locations = Location.query.all()
     return jsonify([location.simple_serialize() for location in locations]), 200
 
 @app.route("/locations/", methods=["POST"])
 def create_location():
+    """
+    Endpoint for creating a location 
+    """
     data = request.get_json()
     name = data.get("name")
     area_id = data.get("area_id")
@@ -77,6 +92,9 @@ def create_location():
 
 @app.route("/locations/<int:location_id>/", methods=["DELETE"])
 def delete_location(location_id):
+    """
+    Endpoint for deleting a location
+    """
     location = Location.query.get(location_id)
     if not location:
 
@@ -89,11 +107,17 @@ def delete_location(location_id):
 # Routes for User
 @app.route("/users/", methods=["GET"])
 def get_users():
+    """
+    Endpoint for getting all the users 
+    """
     users = User.query.all()
     return jsonify([user.serialize() for user in users]), 200
 
 @app.route("/users/", methods=["POST"])
 def create_user():
+    """
+    Endpoint for creating an user 
+    """
     data = request.get_json()
     name = data.get("name")
     preferences = data.get("preferences")
@@ -108,6 +132,9 @@ def create_user():
 
 @app.route("/users/<int:user_id>/", methods=["DELETE"])
 def delete_user(user_id):
+    """
+    Endpoint for deleting a user 
+    """
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -146,6 +173,7 @@ locations_data = [
 
 # Populate the database
 def seed_data():
+    """helper function to populate the database"""
     with app.app_context():
         db.drop_all()  
         db.create_all() 
@@ -175,6 +203,7 @@ def seed_data():
 
 @app.route("/seed/", methods=["POST"])
 def seed():
+    """Endpoint for populating the database for testing purposes"""
     seed_data()  
     return jsonify({"message": "Database loaded successfully"}), 200
 
